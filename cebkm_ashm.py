@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from numpy.linalg import inv
+from datasets import prepare_dataset
 
 
 def get_one_hot(indices, n_rows, n_cols):
@@ -48,13 +49,7 @@ def do_until_converge(R, F, G):
 
 if __name__ == "__main__":
     #Read and process data
-    file = 'classic3.csv'
-    data = pd.read_csv(file)
-    data.iloc[:, 0] = data.iloc[:, 0].replace('cran', int(0)).replace('cisi', int(1)).replace('med', int(2))
-    data = data.to_numpy()
-    ground_truth = data[:, 0]
-    data_matrix = data[:, 1:]
-    print(data_matrix.shape)
+    data_matrix, ground_truth = prepare_dataset(2)
 
     # Step 1 : Prepare R : Dont know if we need to convert R to a bipartite graph
     R = prepare_r_matrix(data_matrix, 3, 3)
