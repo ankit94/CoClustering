@@ -54,9 +54,11 @@ if __name__ == "__main__":
     data = data.to_numpy()
     ground_truth = data[:, 0]
     data_matrix = data[:, 1:]
+    print(data_matrix.shape)
 
     # Step 1 : Prepare R : Dont know if we need to convert R to a bipartite graph
     R = prepare_r_matrix(data_matrix, 3, 3)
+    np.savetxt("r.csv", R, delimiter=",")
 
     # Step 2 : Initialize F and G, the indicator matrices
     F, G = initialize_f_and_g(data_matrix, 3)
