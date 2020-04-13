@@ -4,3 +4,4 @@ venv
 notebooks
 .idea
 __pycache__/
+data/
