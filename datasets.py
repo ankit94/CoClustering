@@ -83,17 +83,13 @@ def get_mnist():
     return mnist()
 
 def prepare_for_mnist():
-    download_parse('train-images-idx3-ubyte.gz')
-    download_parse( 't10k-images-idx3-ubyte.gz')
-    download_parse('train-labels-idx1-ubyte.gz')
-    download_parse('t10k-labels-idx1-ubyte.gz')
-
     cwd = os.getcwd()
-
     if os.path.isdir(os.path.join(cwd, 'data')):
         pass
     else:
         os.mkdir('data')
+    download_parse('train-images-idx3-ubyte.gz')
+    download_parse('train-labels-idx1-ubyte.gz')
 
 
 def download_parse(fgz):

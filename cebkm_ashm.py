@@ -52,7 +52,7 @@ if __name__ == "__main__":
     data_matrix, ground_truth = prepare_dataset(2)
 
     # Step 1 : Prepare R : Dont know if we need to convert R to a bipartite graph
-    R = prepare_r_matrix(data_matrix, 3, 3)
+    R = prepare_r_matrix(data_matrix, 3, 2816)
     np.savetxt("r.csv", R, delimiter=",")
 
     # Step 2 : Initialize F and G, the indicator matrices
