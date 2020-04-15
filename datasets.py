@@ -11,6 +11,11 @@ from matplotlib import pyplot as plt
 random.seed(1)
 np.random.seed(1)
 
+from sklearn.decomposition import PCA
+
+
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
 # Dataset download path
 mnist_url = 'http://yann.lecun.com/exdb/mnist/'
 
@@ -34,6 +39,10 @@ def mnist():
     fd = open(os.path.join(data_dir, 'train-labels-idx1-ubyte'))
     loaded = np.fromfile(file=fd, dtype=np.uint8)
     trLabels = loaded[8:].reshape((60000)).astype(float)
+    min_max_scaler = MinMaxScaler()
+    std_scaler = StandardScaler()
+    trData = std_scaler.fit_transform(trData)
+    trData = min_max_scaler.fit_transform(trData)
     return trData, trLabels
 
 
