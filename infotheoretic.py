@@ -4,7 +4,6 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 import numpy as np
 from coclust.evaluation.external import accuracy
 from coclust.visualization import plot_delta_kl, plot_convergence
-from sklearn.cluster import KMeans
 
 def perform_clustering(data_matrix, n_clusters, method = "infoth"):
     model = CoclustInfo(n_row_clusters=n_clusters, n_col_clusters=n_clusters, n_init=4, random_state=0)
@@ -39,6 +38,15 @@ if __name__  == "__main__":
     # Evaluate model
     evaluate_model(ground_truth2, predicted2)
     plot_clusters(model2)
+
+    # Dataset 3
+    n_clusters3 = 4
+    data_matrix3, ground_truth3 = prepare_dataset(3)
+    model3, predicted3 = perform_clustering(data_matrix3, n_clusters3)
+
+    # Evaluate model
+    evaluate_model(ground_truth3, predicted3)
+    plot_clusters(model3)
 
 
 

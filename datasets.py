@@ -10,6 +10,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 random.seed(1)
 np.random.seed(1)
+import scipy.io as io
 
 from sklearn.decomposition import PCA
 
@@ -62,6 +63,13 @@ def get_mnist():
     prepare_for_mnist()
     return mnist()
 
+def get_cstr():
+    file = 'cstr.mat'
+    matlab_dict = io.loadmat(file)
+    data_matrix = np.array(matlab_dict['fea'])
+    ground_truth = np.array(matlab_dict['gnd']).reshape(1,-1)[0]
+    return data_matrix, ground_truth
+
 def prepare_for_mnist():
     cwd = os.getcwd()
     if os.path.isdir(os.path.join(cwd, 'data')):
@@ -83,7 +91,8 @@ def download_parse(fgz):
 
 dataset  = {
     1 : get_classic_3,
-    2 : get_mnist
+    2 : get_mnist,
+    3 : get_cstr
 }
 
 def prepare_dataset(dataset_number, **options):
