@@ -5,3 +5,4 @@ notebooks
 .idea
 __pycache__/
 data/
+*.csv

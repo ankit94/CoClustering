@@ -26,45 +26,16 @@ datapath = cwd + '/data/'
 
 
 
-def mnist(noSamples=1000, digits=[3, 8]):
+def mnist():
     data_dir = os.getcwd() + '/data/'
     fd = open(os.path.join(data_dir, 'train-images-idx3-ubyte'))
     loaded = np.fromfile(file=fd, dtype=np.uint8)
     trData = loaded[16:].reshape((60000, 28*28)).astype(float)
-
     fd = open(os.path.join(data_dir, 'train-labels-idx1-ubyte'))
     loaded = np.fromfile(file=fd, dtype=np.uint8)
     trLabels = loaded[8:].reshape((60000)).astype(float)
+    return trData, trLabels
 
-    trX = np.zeros((noSamples, 28 * 28))
-    trY = np.zeros(noSamples)
-    # Normalize the data
-    trData = trData / 255.
-
-    if noSamples % len(digits) != 0:
-        raise ValueError(
-            "Unequal number of samples per class will be returned, adjust noTrSamples and digits accordingly!")
-    else:
-        noTrPerClass = noSamples // len(digits)
-
-    count = 0
-    for ll in range(len(digits)):
-        idl = np.where(trLabels == digits[ll])[0]
-        np.random.shuffle(idl)
-        idl_ = idl[: noTrPerClass]
-        idx = list(range(count * noTrPerClass, (count + 1) * noTrPerClass))
-        trX[idx, :] = trData[idl_, :]
-        trY[idx] = trLabels[idl_]
-
-    train_idx = np.random.permutation(trX.shape[0])
-    trX = trX[train_idx, :]
-    trY = trY[train_idx]
-
-    trX = trX.T
-    trY = trY.reshape(1, -1)
-
-    plot_image(trX, 0)
-    return trX, trY
 
 def plot_image(data, imageNumber):
     plt.imshow(data[:, imageNumber].reshape(28, 28))
