@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 import sys, os
-sys.path.append(os.path.abspath('../../'))
+sys.path.append(os.path.abspath('../'))
 
 ## Driver Code ##
 import numpy as np
@@ -9,8 +9,8 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.decomposition import TruncatedSVD
 from sklearn.decomposition import NMF
-from subspaceProjectedClustering import projectedClustering
-from plotOutput import plotClustering
+from subspace_proclus import projectedClustering
+from helper import plotClustering
 from data.datasets import get_data_set
 
 def computeAccuracy(pred, expect):
@@ -35,7 +35,7 @@ def computeAccuracy(pred, expect):
     return acc
 
 
-if __name__ == '__main__':
+def perform_clustering(dataset):
     
     ## Import Data ##
     # data = pd.read_csv("../classic3.csv") 
@@ -48,7 +48,14 @@ if __name__ == '__main__':
     # X = data.to_numpy()
     # groundTruth = X[:,0]
     # X = X[:,1:]
-    X, groundTruth = get_data_set(1)
+
+    data_map = {
+        'classic3': 1,
+        'cstr': 3,
+        'mnist': 2
+    }
+
+    X, groundTruth = get_data_set(data_map[dataset])
     
     ## Dimnesionality Reduction ##
     

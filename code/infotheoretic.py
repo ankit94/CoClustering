@@ -61,16 +61,8 @@ class InformationTheoretic:
         plt.title("Information Theoretic Coclustering")
         plt.show()
 
-if __name__  == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-d",
-        "--dataset",
-        choices=['classic3', 'mnist','cstr'],
-        required=True)
-    args = parser.parse_args()
-
-    cocluster = InformationTheoretic(args.dataset)
+def perform_clustering(dataset):
+    cocluster = InformationTheoretic(dataset)
     cocluster.perform_clustering()
     cocluster.evaluate_model()
     cocluster.plot_clusters()
