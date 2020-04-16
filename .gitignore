@@ -1,10 +1,9 @@
 venv
 .DS_Store
-.pyc
+*.pyc
 notebooks
 .idea
 __pycache__/
-data/
 *.csv
 .vscode
 train-*

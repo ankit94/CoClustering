@@ -6,7 +6,7 @@ from sklearn.utils import shuffle
 from matplotlib import pyplot as plt
 from sklearn.cluster import SpectralCoclustering
 from sklearn.metrics import normalized_mutual_info_score
-from dataset.datasets import get_data_set
+from data.datasets import get_data_set
 import argparse
 
 class Spectral(object):
