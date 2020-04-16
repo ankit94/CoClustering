@@ -15,7 +15,8 @@ class Spectral(object):
         """
         data_map = {
             'classic3': 1,
-            'cstr': 3
+            'cstr': 3,
+            'mnist': 2
         }
         self.dataset = dataset
         print("Fetching ", dataset)
@@ -45,9 +46,10 @@ class Spectral(object):
     def form_biclusters(self):
         """generates spectral bi-clusters from self.data
         """
-        print("Generating clusters")
+        n_clusters = len(np.unique(self.labels))
+        print("Generating {} clusters".format(n_clusters))
         self.bicluster = SpectralCoclustering(
-            n_clusters=len(np.unique(self.labels)),
+            n_clusters=n_clusters,
             n_jobs=-1)
         self.bicluster.fit(self.data)
 
@@ -71,7 +73,7 @@ if __name__ == '__main__':
     parser.add_argument(
         "-d",
         "--dataset",
-        choices=['classic3', 'cstr'],
+        choices=['classic3', 'cstr', 'mnist'],
         required=True) 
     args = parser.parse_args()
 
