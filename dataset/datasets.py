@@ -8,29 +8,18 @@ from matplotlib import pyplot as plt
 random.seed(1)
 np.random.seed(1)
 import scipy.io as io
-
+import pathlib 
 from sklearn.decomposition import PCA
-
-
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Dataset download path
 mnist_url = 'http://yann.lecun.com/exdb/mnist/'
-
-cwd = os.getcwd()
-
-if os.path.isdir(os.path.join(cwd, 'data')):
-    pass
-else:
-    os.mkdir('data')
-
+data_directory = pathlib.Path(__file__).parent
+print(data_directory)
 mnist_url = 'http://yann.lecun.com/exdb/mnist/'
-datapath = cwd + '/data/'
-
 
 
 def mnist():
-    data_directory = os.getcwd() + '/data/'
     file_descriptor = open(os.path.join(data_directory, 'train-images-idx3-ubyte'))
     data = np.fromfile(file=file_descriptor, dtype=np.uint8)
     data_matrix = data[16:].reshape((60000, 28*28)).astype(float)
@@ -45,13 +34,9 @@ def mnist():
     data_matrix = min_max_scaler.fit_transform(data_matrix)
     return data_matrix, ground_truth
 
-
-def plot_image(data, imageNumber):
-    plt.imshow(data[:, imageNumber].reshape(28, 28))
-
 def get_classic_3():
     file = 'classic3.csv'
-    data = pd.read_csv(file)
+    data = pd.read_csv(os.path.join(data_directory, file))
     data.iloc[:, 0] = data.iloc[:, 0].replace('cran', int(0)).replace('cisi', int(1)).replace('med', int(2))
     data = data.to_numpy()
     ground_truth = data[:, 0]
@@ -64,27 +49,21 @@ def get_mnist():
 
 def get_cstr():
     file = 'cstr.mat'
-    matlab_dict = io.loadmat(file)
+    matlab_dict = io.loadmat(os.path.join(data_directory,file))
     data_matrix = np.array(matlab_dict['fea'])
     ground_truth = np.array(matlab_dict['gnd']).reshape(1,-1)[0]
     return data_matrix, ground_truth
 
 def prepare_for_mnist():
-    cwd = os.getcwd()
-    if os.path.isdir(os.path.join(cwd, 'data')):
-        pass
-    else:
-        os.mkdir('data')
     download_parse('train-images-idx3-ubyte.gz')
     download_parse('train-labels-idx1-ubyte.gz')
 
-
 def download_parse(fgz):
-    if os.path.exists(os.path.join(datapath, fgz)):
+    if os.path.exists(os.path.join(data_directory, fgz)):
         pass
     else:
         url = urljoin(mnist_url, fgz)
-        filename = os.path.join(datapath, fgz)
+        filename = os.path.join(data_directory, fgz)
         urlretrieve(url, filename)
         os.system('gunzip ' + filename)
 

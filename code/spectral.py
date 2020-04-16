@@ -1,9 +1,12 @@
+import sys, os
+sys.path.append(os.path.abspath('../'))
+
 import numpy as np
 from sklearn.utils import shuffle
 from matplotlib import pyplot as plt
 from sklearn.cluster import SpectralCoclustering
 from sklearn.metrics import normalized_mutual_info_score
-from datasets import get_data_set
+from dataset.datasets import get_data_set
 import argparse
 
 class Spectral(object):

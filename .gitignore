@@ -6,5 +6,5 @@ notebooks
 __pycache__/
 data/
 *.csv
-*.mat
 .vscode
+train-*

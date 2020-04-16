@@ -1,5 +1,8 @@
+import sys, os
+sys.path.append(os.path.abspath('../'))
+
 from coclust.coclustering import CoclustInfo
-from datasets import prepare_dataset
+from dataset.datasets import prepare_dataset
 from sklearn.metrics import normalized_mutual_info_score as nmi
 from coclust.visualization import plot_delta_kl, plot_convergence
 import argparse
