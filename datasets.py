@@ -1,6 +1,3 @@
-'''
-This code os refferred from a course we had taken last semester
-'''
 import os
 import numpy as np
 from urllib.request import urlretrieve
@@ -33,18 +30,20 @@ datapath = cwd + '/data/'
 
 
 def mnist():
-    data_dir = os.getcwd() + '/data/'
-    fd = open(os.path.join(data_dir, 'train-images-idx3-ubyte'))
-    loaded = np.fromfile(file=fd, dtype=np.uint8)
-    trData = loaded[16:].reshape((60000, 28*28)).astype(float)
-    fd = open(os.path.join(data_dir, 'train-labels-idx1-ubyte'))
-    loaded = np.fromfile(file=fd, dtype=np.uint8)
-    trLabels = loaded[8:].reshape((60000)).astype(float)
+    data_directory = os.getcwd() + '/data/'
+    file_descriptor = open(os.path.join(data_directory, 'train-images-idx3-ubyte'))
+    data = np.fromfile(file=file_descriptor, dtype=np.uint8)
+    data_matrix = data[16:].reshape((60000, 28*28)).astype(float)
+    file_descriptor = open(os.path.join(data_directory, 'train-labels-idx1-ubyte'))
+    data = np.fromfile(file=file_descriptor, dtype=np.uint8)
+    ground_truth = data[8:].reshape((60000)).astype(float)
+
+    #Scale the result and return
     min_max_scaler = MinMaxScaler()
     std_scaler = StandardScaler()
-    trData = std_scaler.fit_transform(trData)
-    trData = min_max_scaler.fit_transform(trData)
-    return trData, trLabels
+    data_matrix = std_scaler.fit_transform(data_matrix)
+    data_matrix = min_max_scaler.fit_transform(data_matrix)
+    return data_matrix, ground_truth
 
 
 def plot_image(data, imageNumber):
