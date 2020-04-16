@@ -1,8 +1,7 @@
-import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from numpy.linalg import inv
-from datasets import prepare_dataset
+from data.datasets import prepare_dataset
 
 
 def get_one_hot(indices, n_rows, n_cols):

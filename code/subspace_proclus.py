@@ -181,6 +181,7 @@ def projectedClustering(X, k = 2, l = 3, minDeviation = 0.1, A = 30, B = 3, nite
     np.random.shuffle(indexs)
     S = indexs[0:(A*k)]
     M = initializeMedoids(X, S, B * k)
+    print("finished initialization phase...")
 
     # Iterative phase
 
@@ -277,11 +278,6 @@ def projectedClustering(X, k = 2, l = 3, minDeviation = 0.1, A = 30, B = 3, nite
             #print("marked an outlier")
             assigns[i] = -1
 
+    print("finished refinement phase...")
     return (Mcurr, Dis, assigns)
-
-
-# In[ ]:
-
-
-
 

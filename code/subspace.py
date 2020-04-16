@@ -56,7 +56,7 @@ def perform_clustering(dataset):
     }
 
     X, groundTruth = get_data_set(data_map[dataset])
-    
+
     ## Dimnesionality Reduction ##
     
     #pca = PCA(n_components=10)
@@ -71,12 +71,16 @@ def perform_clustering(dataset):
     ## Run the Projected Clustering Algorithm ##
     rseed = 327530
 
-    M, D, expectedLabels = projectedClustering(X, k = 3, l = X.shape[1], seed = rseed, A = 5, B = 3)
+    if data_map[dataset] == 1:
+        k=3
+    elif data_map[dataset] == 2:
+        k=4
+    elif data_map[dataset] == 3:
+        k=10
+
+    M, D, expectedLabels = projectedClustering(X, k, l = X.shape[1], seed = rseed, A = 5, B = 3)
     accuracy = computeAccuracy(expectedLabels, groundTruth)*100
     print("****Accuracy****:", accuracy)
     
     #Dims= [0,9]
     #plotClustering(X, M, expectedLabels, D = Dims)
-
-
-
