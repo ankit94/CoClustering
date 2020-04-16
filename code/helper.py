@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[11]:
-
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -49,7 +47,6 @@ def plotClustering(X, M, A, D):
     plt.rcParams["figure.figsize"] = [50,50]
 
 
-# In[ ]:
 
 
 

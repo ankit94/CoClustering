@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import SpectralCoclustering
 from sklearn.metrics import normalized_mutual_info_score
 from data.datasets import get_data_set
-import argparse
+
 
 class Spectral(object):
     def __init__(self, dataset):
@@ -71,16 +71,8 @@ class Spectral(object):
         fit_data = fit_data[:, np.argsort(self.bicluster.column_labels_)]
         self.view_dataset(data=fit_data, title='co-clusters')
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-d",
-        "--dataset",
-        choices=['classic3', 'cstr', 'mnist'],
-        required=True) 
-    args = parser.parse_args()
-
-    cocluster = Spectral(args.dataset)
+def perform_clustering(dataset):
+    cocluster = Spectral(dataset)
     cocluster.shuffle_data()
     cocluster.form_biclusters()
     cocluster.get_accuracy()
