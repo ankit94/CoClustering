@@ -1,46 +1,61 @@
 import numpy as np
 from sklearn.utils import shuffle
 from matplotlib import pyplot as plt
-from collections import Counter, defaultdict
 from sklearn.cluster import SpectralCoclustering
 from sklearn.metrics import normalized_mutual_info_score
-import pandas as pd
+from datasets import get_data_set
+import argparse
 
-def view_dataset(data_matrix, title):
-    plt.spy(data_matrix, markersize=0.001, )
-    plt.title(title)
-    plt.show()
+class Spectral(object):
+    def __init__(self, dataset):
+        data_map = {
+            'classic3': 1,
+            'mnist': 2,
+            'cstr': 3
+        }
+        self.dataset = dataset
+        print("Fetching ", dataset)
+        self.data, self.labels = get_data_set(data_map[dataset])
 
+    def view_dataset(self, title, data, markersize=0.001):
+        plt.spy(data, markersize=markersize)
+        plt.title(title)
+        plt.show()
 
-def shuffle_data(data_matrix, document_names, feature_names):
-    data_matrix, document_names = shuffle(data_matrix, document_names)
-    data_matrix, feature_names = shuffle(data_matrix.transpose(), feature_names)
-    return data_matrix.transpose() , document_names, feature_names
+    def shuffle_data(self):
+        print("Shuffling")
+        self.data, self.labels = shuffle(self.data, self.labels)
+        self.view_dataset(data=self.data, title='shuffled data')
 
+    def form_biclusters(self):
+        print("Generating clusters")
+        self.bicluster = SpectralCoclustering(
+            n_clusters=len(np.unique(self.labels)),
+            n_jobs=-1)
+        self.bicluster.fit(self.data)
 
-def form_biclusters(data_matrix, categories):
-    bicluster = SpectralCoclustering(n_clusters=len(categories))    
-    return bicluster.fit(data_matrix)
+    def get_accuracy(self):
+        nmi = normalized_mutual_info_score(
+            self.bicluster.row_labels_,
+            self.labels)
+        print("Accuracy is ", nmi)
+
+    def show_clusters(self):
+        fit_data = self.data[np.argsort(self.bicluster.row_labels_)]
+        fit_data = fit_data[:, np.argsort(self.bicluster.column_labels_)]
+        self.view_dataset(data=fit_data, title='co-clusters')
 
 if __name__ == '__main__':
-    df = pd.read_csv('classic3.csv')
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-d",
+        "--dataset",
+        choices=['classic3', 'cstr', 'mnist'],
+        required=True) 
+    args = parser.parse_args()
 
-    cats = df[' '].to_numpy()
-    del df[' ']
-    words = df.columns.to_numpy()
-
-    
-    data_matrix = df.to_numpy()
-    view_dataset(data_matrix, "Original matrix")
-    data_matrix, cats, words = shuffle_data(data_matrix, cats, words)
-    view_dataset(data_matrix, "Shuffled matrix")
-
-    bicluster = form_biclusters(data_matrix, np.unique(cats))
-    t_labels = [1 if x == 'cisi' else (0 if x == 'med' else 2 ) for x in cats]
-    nmi = normalized_mutual_info_score(bicluster.row_labels_, t_labels )
-    print("Accuracy is {}".format(nmi))
-
-    fit_data = data_matrix[np.argsort(bicluster.row_labels_)]
-    fit_data = fit_data[:, np.argsort(bicluster.column_labels_)]
-
-    view_dataset(fit_data, "Bi-clusters")
+    cocluster = Spectral(args.dataset)
+    cocluster.shuffle_data()
+    cocluster.form_biclusters()
+    cocluster.get_accuracy()
+    cocluster.show_clusters()
