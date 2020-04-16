@@ -24,6 +24,12 @@ class Spectral(object):
         self.dataset = dataset
         print("Fetching ", dataset)
         self.data, self.labels = get_data_set(data_map[dataset])
+        if (~self.data.any(axis=0)).any():
+            print("Found empty features. deleting...")
+            self.data = np.delete(
+                self.data,
+                np.where(~self.data.any(axis=0))[0],
+                axis=1)
 
     def view_dataset(self, title, data, markersize=0.001):
         """plot data matrix

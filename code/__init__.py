@@ -1,1 +1,1 @@
-from . import SubpsaceCoClustering, spectral, cebkm, infotheoretic
+from . import SubpsaceCoClustering, spectral, infotheoretic
