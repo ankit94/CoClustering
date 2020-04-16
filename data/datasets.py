@@ -15,7 +15,6 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 # Dataset download path
 mnist_url = 'http://yann.lecun.com/exdb/mnist/'
 data_directory = pathlib.Path(__file__).parent
-mnist_url = 'http://yann.lecun.com/exdb/mnist/'
 
 
 def mnist():
