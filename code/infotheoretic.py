@@ -56,8 +56,8 @@ class InformationTheoretic:
         """
         plot_convergence(self.model.criterions, 'P_KL MI')
         plot_delta_kl(self.model)
-        # markersize = 0.001
-        plt.spy(self.fit_data)
+        markersize = 0.001
+        plt.spy(self.fit_data, markersize=markersize)
         plt.title("Information Theoretic Coclustering")
         plt.show()
 
