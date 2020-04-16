@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
+import sys, os
+sys.path.append(os.path.abspath('../../'))
 
 ## Driver Code ##
 import numpy as np
@@ -9,6 +11,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.decomposition import NMF
 from subspaceProjectedClustering import projectedClustering
 from plotOutput import plotClustering
+from data.datasets import get_data_set
 
 def computeAccuracy(pred, expect):
 
@@ -35,16 +38,17 @@ def computeAccuracy(pred, expect):
 if __name__ == '__main__':
     
     ## Import Data ##
-    data = pd.read_csv("../classic3.csv") 
+    # data = pd.read_csv("../classic3.csv") 
     
-    ## Label the documents type (classes) ##
-    data.iloc[:,0] = data.iloc[:,0].replace('cran',int(0))
-    data.iloc[:,0] = data.iloc[:,0].replace('cisi',int(1))
-    data.iloc[:,0] = data.iloc[:,0].replace('med',int(2))
+    # ## Label the documents type (classes) ##
+    # data.iloc[:,0] = data.iloc[:,0].replace('cran',int(0))
+    # data.iloc[:,0] = data.iloc[:,0].replace('cisi',int(1))
+    # data.iloc[:,0] = data.iloc[:,0].replace('med',int(2))
     
-    X = data.to_numpy()
-    groundTruth = X[:,0]
-    X = X[:,1:]
+    # X = data.to_numpy()
+    # groundTruth = X[:,0]
+    # X = X[:,1:]
+    X, groundTruth = get_data_set(1)
     
     ## Dimnesionality Reduction ##
     
