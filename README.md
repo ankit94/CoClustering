@@ -1,6 +1,9 @@
 # Sematic Web Mining : Co-Clustering
 
-We've implemented 3 algorithms over 3 datasets. run code/clustering_interface.py to use any combination
+    Install the required python libraries using the command  
+    pip install -r requirements.txt
+        
+For the execution, we've implemented 3 algorithms over 3 datasets. run code/clustering_interface.py to use any combination
 
     $ python clustering_interface.py -c <algorithm> -d <dataset>
     
