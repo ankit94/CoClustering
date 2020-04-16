@@ -3,6 +3,8 @@ from datasets import prepare_dataset
 from sklearn.metrics import normalized_mutual_info_score as nmi
 from coclust.visualization import plot_delta_kl, plot_convergence
 import argparse
+import numpy as np
+import matplotlib.pyplot as plt
 
 class InformationTheoretic:
     def __init__(self, dataset):
@@ -31,6 +33,8 @@ class InformationTheoretic:
         model.fit(self.data_matrix)
         self.model = model
         self.predicted = model.row_labels_
+        self.fit_data = self.data_matrix[np.argsort(self.model.row_labels_)]
+        self.fit_data = self.fit_data[:, np.argsort(self.model.column_labels_)]
 
     def evaluate_model(self):
         """calculates NMI
@@ -49,6 +53,10 @@ class InformationTheoretic:
         """
         plot_convergence(self.model.criterions, 'P_KL MI')
         plot_delta_kl(self.model)
+        markersize = 0.001
+        plt.spy(self.fit_data, markersize=markersize)
+        plt.title("Information Theoretic Coclustering")
+        plt.show()
 
 if __name__  == "__main__":
     parser = argparse.ArgumentParser()
