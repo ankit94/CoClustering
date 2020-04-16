@@ -1,52 +1,68 @@
 from coclust.coclustering import CoclustInfo
 from datasets import prepare_dataset
 from sklearn.metrics import normalized_mutual_info_score as nmi
-import numpy as np
-from coclust.evaluation.external import accuracy
 from coclust.visualization import plot_delta_kl, plot_convergence
+import argparse
 
-def perform_clustering(data_matrix, n_clusters, method = "infoth"):
-    model = CoclustInfo(n_row_clusters=n_clusters, n_col_clusters=n_clusters, n_init=4, random_state=0)
-    model.fit(data_matrix)
-    return model, np.array(model.row_labels_)
+class InformationTheoretic:
+    def __init__(self, dataset):
+        """initialize InfoTh class
 
-def evaluate_model(ground_truth, predicted):
-    nmi_eval = nmi(ground_truth, predicted)
-    print(f"NMI: {nmi_eval}")
-    accuracy_eval = accuracy(ground_truth, predicted)
-    print(f"ACCURACY: {accuracy_eval}")
+                Arguments:
+                    dataset {np.array} -- dataset to fetch
+                """
+        data_map = {
+            'classic3': [1,3],
+            'mnist':[2,10],
+            'cstr': [3,4]
+        }
+        self.dataset = dataset
+        print("Fetching ", dataset)
+        self.n_clusters = data_map[dataset][1]
+        self.data_matrix, self.ground_truth = prepare_dataset(data_map[dataset][0])
 
-def plot_clusters(model):
-    plot_convergence(model.criterions, 'P_KL MI')
-    plot_delta_kl(model)
+    def perform_clustering(self):
+        """Perform the Information theoretic clustering
+            Arguments:
+                data_matrix,
+                number_of_clusters
+        """
+        model = CoclustInfo(n_row_clusters=self.n_clusters, n_col_clusters=self.n_clusters, n_init=4, random_state=0)
+        model.fit(self.data_matrix)
+        self.model = model
+        self.predicted = model.row_labels_
+
+    def evaluate_model(self):
+        """calculates NMI
+        Arguments:
+            ground_truth,
+            predicted_values
+        """
+        nmi_eval = nmi(self.ground_truth, self.predicted)
+        print(f"NMI Accuracy is: {nmi_eval}")
+
+    def plot_clusters(self):
+        """plot clustering results
+
+        Arguments:
+            model
+        """
+        plot_convergence(self.model.criterions, 'P_KL MI')
+        plot_delta_kl(self.model)
 
 if __name__  == "__main__":
-    #Dataset 1
-    n_clusters = 3
-    data_matrix, ground_truth = prepare_dataset(1)
-    model, predicted = perform_clustering(data_matrix, n_clusters)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-d",
+        "--dataset",
+        choices=['classic3', 'mnist','cstr'],
+        required=True)
+    args = parser.parse_args()
 
-    #Evaluate model
-    evaluate_model(ground_truth, predicted)
-    plot_clusters(model)
-
-    #Dataset 2
-    n_clusters2 = 10
-    data_matrix2, ground_truth2 = prepare_dataset(2)
-    model2, predicted2 = perform_clustering(data_matrix2, n_clusters2)
-
-    # Evaluate model
-    evaluate_model(ground_truth2, predicted2)
-    plot_clusters(model2)
-
-    # Dataset 3
-    n_clusters3 = 4
-    data_matrix3, ground_truth3 = prepare_dataset(3)
-    model3, predicted3 = perform_clustering(data_matrix3, n_clusters3)
-
-    # Evaluate model
-    evaluate_model(ground_truth3, predicted3)
-    plot_clusters(model3)
+    cocluster = InformationTheoretic(args.dataset)
+    cocluster.perform_clustering()
+    cocluster.evaluate_model()
+    cocluster.plot_clusters()
 
 
 
