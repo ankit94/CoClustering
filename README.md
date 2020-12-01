@@ -1,4 +1,5 @@
 # Sematic Web Mining : Co-Clustering
+In this project, we aim to perform Co-clustering on various datasets. Co-clustering, or two-mode clustering is a data mining technique which allows simultaneous clustering of the rows and columns of a matrix.
 
     Install the required python libraries using the command  
     pip install -r requirements.txt
